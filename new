@@ -1,0 +1,90 @@
+# How to Log in Through a One-Time Credential on Appwrite 🔐🚪🔑
+
+This document is part of the Appwrite contributors' guide. Before you continue reading this document make sure you have read the Code of Conduct and the Contributing Guide.
+
+## Getting started
+
+Intro: Appwrite is an open-source backend server that simplifies backend development for web, mobile, native, and backend applications. One of its powerful features is the ability to log in through a one-time credential. In this step-by-step guide, we'll walk you through the process of implementing this feature in your app.
+
+## Prerequisites
+
+Before you begin, make sure you have the following prerequisites in place:
+
+Appwrite Server: You should have the Appwrite server up and running. If not, you can follow the official installation guide to set it up.
+
+Appwrite SDK: You need to have the Appwrite SDK for your chosen programming language installed in your project. You can find the SDKs and installation instructions in the official Appwrite SDK repository.
+
+### Step 1: Create a Project in Appwrite
+- Log in to your Appwrite dashboard.
+
+- Click on "Projects" in the sidebar.
+
+- Click the "+ Create Project" button.
+
+- Fill in the project details, such as name and description, and click "Create."
+
+### Step 2: Create a One-Time Login Function
+
+In this step, we'll create a function in your app that generates a one-time credential for logging in.
+
+- Open your code editor and create a new function or endpoint.
+
+- Initialize the Appwrite SDK in your code and set up your project credentials using the Project ID and API Key you obtained in Step 1.
+
+- Use the Appwrite SDK to create a one-time login credential. Here's an example in JavaScript:
+
+```javaScript
+{
+    const appwrite = new Appwrite();
+appwrite
+  .setEndpoint('https://your-appwrite-server.com/v1') // Replace with your Appwrite server URL
+  .setProject('your-project-id') // Replace with your Appwrite project ID
+  .setKey('your-api-key'); // Replace with your API key
+
+appwrite.account.createSession('magic-link', 'https://your-app.com/login')
+  .then(session => {
+    const magicLink = session.url;
+    console.log('Magic Link:', magicLink);
+  })
+  .catch(error => {
+    console.error('Error:', error);
+  });
+
+}
+```
+- This code generates a magic link that users can click to log in securely. You can send this link to users via email or any other method you prefer.
+
+### Step 3: Handle the One-Time Login
+
+In your app, create a login page or route where users can click the magic link to log in.
+
+When a user clicks the magic link, your app should extract the session token from the URL and use it to authenticate the user.
+
+Here's an example in JavaScript for handling the login:
+
+```javaScript
+{const urlParams = new URLSearchParams(window.location.search);
+const token = urlParams.get('token'); // Get the token from the URL
+
+if (token) {
+  // Authenticate the user using the token
+  appwrite.account.createOAuth2Session(token, 'magic-link')
+    .then(response => {
+      // User is authenticated. You can now redirect them to their dashboard or perform any necessary actions.
+      console.log('User authenticated:', response);
+    })
+    .catch(error => {
+      console.error('Authentication failed:', error);
+    });
+}
+```
+### Step 4: Test Your One-Time Login
+
+- Start your app and navigate to the login page or route.
+
+- Click the magic link generated in Step 2.
+
+- Verify that the user is successfully authenticated and redirected to the appropriate page.
+
+Congratulations! You've successfully contributed to the Appwrite project by adding instructions for logging in through a one-time credential in the contributor.md file. Your contribution will help other developers understand and implement this feature more easily. Thank you for your valuable contribution to the open-source community!
+
